@@ -1,3 +1,4 @@
 [submodule "phonebook_backend"]
-	path = phonebook_backend
-	url = ./part3/phonebook_backend
+	path = ./part3/phonebook_backend
+	url = https://github.com/Timo-Vehvilainen/phonebook_backend.git
+
