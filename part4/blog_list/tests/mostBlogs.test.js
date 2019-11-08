@@ -1,12 +1,12 @@
 const listHelper = require('../utils/list_helper')
 
-describe('favourite blog', () => {
+describe('most blogs', () => {
 
-  test('of empty list', () => {
-    expect(listHelper.favouriteBlog([])).toEqual({})
+  test('empty list', () => {
+    expect(listHelper.mostBlogs([])).toEqual(
+      {}
+    )
   })
-
-
 
   const listWithOneBlog = [
     {
@@ -19,33 +19,11 @@ describe('favourite blog', () => {
     }
   ]
 
-  test('when list has only one blog', () => {
-    expect(listHelper.favouriteBlog(listWithOneBlog)).toEqual(
+  test('list with one entry', () => {
+    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual(
       {
         author: "Edsger W. Dijkstra",
-        title: 'Go To Statement Considered Harmful',
-        likes: 5,
-      }
-    )
-  })
-
-  const oneBlogWithZeroLikes = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 0,
-      __v: 0
-    }
-  ]
-
-  test('when list has only one blog with 0 likes', () => {
-    expect(listHelper.favouriteBlog(oneBlogWithZeroLikes)).toEqual(
-      {
-        author: "Edsger W. Dijkstra",
-        title: 'Go To Statement Considered Harmful',
-        likes: 0,
+        blogs: 1,
       }
     )
   })
@@ -101,13 +79,13 @@ describe('favourite blog', () => {
     }  
   ]
 
-  test('when list has multiple blogs', () => {
-    expect(listHelper.favouriteBlog(listWithManyBlogs)).toEqual(
+  test('list with multiple entries', () => {
+    expect(listHelper.mostBlogs(listWithManyBlogs)).toEqual(
       {
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        likes: 12,
+        author: "Robert C. Martin",
+        blogs: 3,
       }
     )
   })
+
 })
