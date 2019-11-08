@@ -1,12 +1,10 @@
 const listHelper = require('../utils/list_helper')
 
-describe('favourite blog', () => {
+describe('most likes', () => {
 
-  test('of empty list', () => {
-    expect(listHelper.favouriteBlog([])).toEqual({})
+  test('empty list', () => {
+    expect(listHelper.mostLikes([])).toEqual({})
   })
-
-
 
   const listWithOneBlog = [
     {
@@ -19,33 +17,11 @@ describe('favourite blog', () => {
     }
   ]
 
-  test('when list has only one blog', () => {
-    expect(listHelper.favouriteBlog(listWithOneBlog)).toEqual(
+  test('list with one entry', () => {
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual(
       {
         author: "Edsger W. Dijkstra",
-        title: 'Go To Statement Considered Harmful',
         likes: 5,
-      }
-    )
-  })
-
-  const oneBlogWithZeroLikes = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 0,
-      __v: 0
-    }
-  ]
-
-  test('when list has only one blog with 0 likes', () => {
-    expect(listHelper.favouriteBlog(oneBlogWithZeroLikes)).toEqual(
-      {
-        author: "Edsger W. Dijkstra",
-        title: 'Go To Statement Considered Harmful',
-        likes: 0,
       }
     )
   })
@@ -72,7 +48,7 @@ describe('favourite blog', () => {
       title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",
       url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-      likes: 12,
+      likes: 13,
       __v: 0
     },
     {
@@ -101,17 +77,16 @@ describe('favourite blog', () => {
     }  
   ]
 
-  test('when list has multiple blogs', () => {
-    expect(listHelper.favouriteBlog(listWithManyBlogs)).toEqual(
+  test('list with multiple entries', () => {
+    expect(listHelper.mostLikes(listWithManyBlogs)).toEqual(
       {
-        title: "Canonical string reduction",
         author: "Edsger W. Dijkstra",
-        likes: 12,
+        likes: 18,
       }
     )
   })
 
-  const listWithEquallyPopularBlogs = [
+  const listWithEquallyPopularBloggers = [
     {
       _id: "5a422a851b54a676234d17f7",
       title: "React patterns",
@@ -149,24 +124,23 @@ describe('favourite blog', () => {
       title: "TDD harms architecture",
       author: "Robert C. Martin",
       url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-      likes: 12,
+      likes: 7,
       __v: 0
     }
   ]
 
-  test('list with multiple entries with equally popular of blogs', () => {
+  test('list with multiple bloggers with same amount of likes', () => {
     expect(
       [
         {
           author: "Robert C. Martin",
-          title: "TDD harms architecture",
-          likes: 12,
+          likes: 17,
         },
         {
           author: "Edsger W. Dijkstra",
-          title: "Canonical string reduction",
-          likes: 12,
+          likes: 17,
         }
-      ]).toContainEqual(listHelper.favouriteBlog(listWithEquallyPopularBlogs))
+      ]).toContainEqual(listHelper.mostLikes(listWithEquallyPopularBloggers))
   })
+
 })
