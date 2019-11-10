@@ -7,18 +7,20 @@ const blogSchema = mongoose.Schema({
   },
   author: {
     type: String,
-    required: true
   },
   url: {
     type: String,
+    required: true
   },
   likes: {
     type: Number,
+    default: 0
   },
 })
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
+    returnedObject['id'] = String(returnedObject._id)
     delete returnedObject._id
     delete returnedObject.__v
   }
