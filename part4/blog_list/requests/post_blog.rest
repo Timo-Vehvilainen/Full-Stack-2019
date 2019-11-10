@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IklhbUdyb290MyIsImlkIjoiNWRjODZmZDk5YzZmMTUzNzIwZTk3MDY4IiwiaWF0IjoxNTczNDE4OTk0fQ.mnQ8adl_qI6-oD7RwMoGgW78OnD-9375WCKanyEI2vw
 
 {
-  "title":"Ith",
+  "title":"Pth",
   "author":"An N",
   "url":"www.imaginarywebsite.com",
   "likes":8.5,
