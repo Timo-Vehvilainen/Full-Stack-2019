@@ -21,15 +21,16 @@ function App() {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
+  const blogCreatorRef = React.createRef()
 
   useEffect(() => {
     const fetchBlogs = async ()  => {
       try {
         const initialBlogs = await blogService.getAll()
         setBlogs(initialBlogs)
-        console.log('Successfully retrieved initial blogs')
+        console.log('Successfully retrieved blogs')
       } catch (exception) {
-        setErrorMessage('Error retrieving initialBlogs.')
+        setErrorMessage('Error retrieving blogs.')
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -40,7 +41,6 @@ function App() {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    console.log(loggedUserJSON)
     if (loggedUserJSON !== null && loggedUserJSON !== "null") {
       const loggedUser = JSON.parse(loggedUserJSON)
       setUser(loggedUser)
@@ -48,7 +48,7 @@ function App() {
     }
   }, [notificationMessage])
 
-  const handleSubmit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
     try {
@@ -85,6 +85,7 @@ function App() {
 
   const handleNewBlog = async (event) => {
     event.preventDefault()
+    blogCreatorRef.current.toggleVisibility()
     console.log('Creating a new log', title, author, url)
     try {
       const createdBlog = {
@@ -107,6 +108,57 @@ function App() {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLikeButton = async (event) => {
+    event.preventDefault()
+    const blog = JSON.parse(event.target.value)
+    const updatedBlog = {
+      ...blog, 
+      user:blog.user.id, 
+      likes: blog.likes+1
+    }
+    try {
+      await blogService.update(updatedBlog)
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
+      setNotificationMessage(`Added a like to blog: ${updatedBlog.title}`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+
+    } catch (exception) {
+      console.log(exception)
+      setErrorMessage('Failed to add like to blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleDeleteButton = async (event) => {
+    event.preventDefault()
+    const blog = JSON.parse(event.target.value)
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      try {
+        await blogService.remove(blog.id)
+        const updatedBlogs = await blogService.getAll()
+        setBlogs(updatedBlogs)
+        setNotificationMessage(`Removed blog: ${blog.title} by ${blog.author}`)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+
+      } catch (exception) {
+        console.log(exception)
+        setErrorMessage('Failed to remove blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+
+    }
+    
   }
 
   const handleUsernameChange = ({target}) => {
@@ -137,7 +189,7 @@ function App() {
 
        
             <LoginForm 
-              handleSubmit={handleSubmit}
+              handleLogin={handleLogin}
               handleLogout={handleLogout}
               handleUsernameChange={handleUsernameChange}
               handlePasswordChange={handlePasswordChange}
@@ -149,7 +201,9 @@ function App() {
               <div></div> :
               <div>
                 <h2>Blogs:</h2>
-                <Togglable buttonLabel='New Blog'>
+                <Togglable 
+                  buttonLabel='New Blog' 
+                  ref={blogCreatorRef}>
                   <BlogCreator 
                     title={title}
                     author={author}
@@ -158,11 +212,14 @@ function App() {
                     handleTitleChange={handleTitleChange}
                     handleAuthorChange={handleAuthorChange}
                     handleUrlChange={handleUrlChange}
+                    currentUser={user}
                   /> 
                 </Togglable> <br/>
                 <Bloglist 
-                  user={user}
+                  currentUserID={user.id}
                   blogs={blogs}
+                  handleLikeButton={handleLikeButton}
+                  handleDeleteButton={handleDeleteButton}
                 /> 
               </div>
             }

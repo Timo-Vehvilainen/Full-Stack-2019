@@ -2,7 +2,7 @@ import React from 'react'
 
 
 const LoginForm = ({
-   handleSubmit,
+   handleLogin,
    handleLogout,
    handleUsernameChange,
    handlePasswordChange,
@@ -15,7 +15,7 @@ const LoginForm = ({
       {(user === null) ?
         <div>
           <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin}>
                 <div>
                   username
                     <input
