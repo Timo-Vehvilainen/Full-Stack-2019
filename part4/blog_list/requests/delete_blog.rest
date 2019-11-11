@@ -1,1 +1,7 @@
-DELETE http://localhost:3003/api/blogs/5dc53a4a6ef8b24270e1bb18
+DELETE http://localhost:3003/api/blogs/5dc895d613a4373ff8100a6b
+Content-Type: application/json
+
+{
+//  "userId": "incorrectuserid"
+  "userId": "5dc89455c00c7f23807b5600"
+}

@@ -3,14 +3,15 @@ const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const Blog = require('../models/blog')
 const User = require('../models/user')
+
 
 describe('when there is initially one user at db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-    const user = new User({username: 'root', password: 'sekret' })
-    await user.save()
+    for (let user of helper.initialUsers) {
+      await api.post('/api/users').send(user)
+    }
   })
 
   test('creation succeeds with a fresh username', async () => {
@@ -35,12 +36,23 @@ describe('when there is initially one user at db', () => {
     expect(usernames).toContain(newUser.username)
   })
 
+  test('valid login', async () => {
+    let loginInfo = {
+      username: "vehvilt1",
+      password: "galaksipersekissa"
+    }
+    await api
+      .post('/api/login')
+      .send(loginInfo)
+      .expect(200)
+  })
+
   test('creation fails with proper statuscode and message if username already taken', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'root',
-      name: 'Superuser',
+      username: 'vehvilt1',
+      name: 'Taneli Vehvilainen',
       password: 'salainen',
     }
 
