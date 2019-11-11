@@ -14,7 +14,7 @@ const App = () => {
   const [ searchTerm, setSearchTerm ] = useState('')
   const [ message, setMessage ] = useState(null)
   const [ errorMessage, setErrorMessage] = useState(null)
-
+ 
   useEffect(() => {
     personService
       .getAll()
