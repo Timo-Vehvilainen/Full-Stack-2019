@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
+import Bloglist from './components/Bloglist'
+import BlogCreator from './components/BlogCreator'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
@@ -38,14 +41,14 @@ function App() {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     console.log(loggedUserJSON)
-    if (loggedUserJSON !== "null") {
+    if (loggedUserJSON !== null && loggedUserJSON !== "null") {
       const loggedUser = JSON.parse(loggedUserJSON)
       setUser(loggedUser)
       blogService.setToken(loggedUser.token)
     }
   }, [notificationMessage])
 
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
     try {
@@ -71,6 +74,13 @@ function App() {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = (event) => {
+    setUser(null)
+    window.localStorage.setItem(
+      'loggedBloglistUser', "null"
+    ) 
   }
 
   const handleNewBlog = async (event) => {
@@ -99,79 +109,24 @@ function App() {
     }
   }
 
-  const loginForm = () => (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-            <div>
-              username
-                <input
-                type="text"
-                value={username}
-                name="Username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              password:
-                <input
-                type="password"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </div>
-          <button type="submit">login</button>
-      </form>
-    </div>
-  )
+  const handleUsernameChange = ({target}) => {
+    setUsername(target.value)
+  }
 
-  const blogsForm = () => (
-    <div>
-      <p>Logged in as {user.username}</p>
-      <button onClick={() => {
-        window.localStorage.setItem('loggedBloglistUser', "null")
-        setUser(null) 
-      }}>
-        Logout
-      </button>
-      <h2>Create new blog</h2>
-      <form onSubmit={handleNewBlog}>
-      <div>
-              title:
-                <input
-                type="text"
-                value={title}
-                name="Username"
-                onChange={({ target }) => setTitle(target.value)}
-              />
-            </div>
-            <div>
-              author
-                <input
-                type="text"
-                value={author}
-                name="Author"
-                onChange={({ target }) => setAuthor(target.value)}
-              />
-            </div>
-            <div>
-              url
-                <input
-                type="text"
-                value={url}
-                name="Url"
-                onChange={({ target }) => setUrl(target.value)}
-              />
-            </div>
-            <button type="submit">Create</button>
-      </form>
-      <h2>Blogs:</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
+  const handlePasswordChange = ({target}) => {
+    setPassword(target.value)
+  }
+  const handleTitleChange = ({target}) => {
+    setTitle(target.value)
+  }
+
+  const handleAuthorChange = ({target}) => {
+    setAuthor(target.value)
+  }
+
+  const handleUrlChange = ({target}) => {
+    setUrl(target.value)
+  }
 
     return (
       <div>
@@ -180,10 +135,37 @@ function App() {
         <Notification message = {notificationMessage}/>
         <Error message={errorMessage} />
 
-        {user === null ? 
-          loginForm() : 
-          blogsForm()}
-        
+       
+            <LoginForm 
+              handleSubmit={handleSubmit}
+              handleLogout={handleLogout}
+              handleUsernameChange={handleUsernameChange}
+              handlePasswordChange={handlePasswordChange}
+              username={username}
+              password={password}
+              user = {user}
+            /> 
+            {(user === null) ? 
+              <div></div> :
+              <div>
+                <h2>Blogs:</h2>
+                <Togglable buttonLabel='New Blog'>
+                  <BlogCreator 
+                    title={title}
+                    author={author}
+                    url={url}
+                    handleNewBlog={handleNewBlog}
+                    handleTitleChange={handleTitleChange}
+                    handleAuthorChange={handleAuthorChange}
+                    handleUrlChange={handleUrlChange}
+                  /> 
+                </Togglable> <br/>
+                <Bloglist 
+                  user={user}
+                  blogs={blogs}
+                /> 
+              </div>
+            }
       </div>
     )
 }
