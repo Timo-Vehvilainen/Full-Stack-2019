@@ -41,7 +41,7 @@ function App() {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    if (loggedUserJSON !== null && loggedUserJSON !== "null") {
+    if (loggedUserJSON !== null && loggedUserJSON !== 'null') {
       const loggedUser = JSON.parse(loggedUserJSON)
       setUser(loggedUser)
       blogService.setToken(loggedUser.token)
@@ -62,7 +62,7 @@ function App() {
       setPassword('')
       window.localStorage.setItem(
         'loggedBloglistUser', JSON.stringify(userLogin)
-      ) 
+      )
       setNotificationMessage(`Successfully logged in as ${username}`)
       setTimeout(() => {
         setNotificationMessage(null)
@@ -76,10 +76,10 @@ function App() {
     }
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     setUser(null)
     window.localStorage.setItem(
-      'loggedBloglistUser', "null"
+      'loggedBloglistUser', 'null'
     ) 
   }
 
@@ -89,8 +89,8 @@ function App() {
     console.log('Creating a new log', title, author, url)
     try {
       const createdBlog = {
-        'title': title, 
-        'author':author, 
+        'title': title,
+        'author':author,
         'url':url,
         'userId':user.id
       }
@@ -114,8 +114,8 @@ function App() {
     event.preventDefault()
     const blog = JSON.parse(event.target.value)
     const updatedBlog = {
-      ...blog, 
-      user:blog.user.id, 
+      ...blog,
+      user:blog.user.id,
       likes: blog.likes+1
     }
     try {
@@ -156,75 +156,73 @@ function App() {
           setErrorMessage(null)
         }, 5000)
       }
-
     }
-    
   }
 
-  const handleUsernameChange = ({target}) => {
+  const handleUsernameChange = ({ target }) => {
     setUsername(target.value)
   }
 
-  const handlePasswordChange = ({target}) => {
+  const handlePasswordChange = ({ target }) => {
     setPassword(target.value)
   }
-  const handleTitleChange = ({target}) => {
+  const handleTitleChange = ({ target }) => {
     setTitle(target.value)
   }
 
-  const handleAuthorChange = ({target}) => {
+  const handleAuthorChange = ({ target }) => {
     setAuthor(target.value)
   }
 
-  const handleUrlChange = ({target}) => {
+  const handleUrlChange = ({ target }) => {
     setUrl(target.value)
   }
 
-    return (
-      <div>
-        <h1>Bloglist</h1>
+  return (
+    <div>
+      <h1>Bloglist</h1>
 
-        <Notification message = {notificationMessage}/>
-        <Error message={errorMessage} />
+      <Notification message = {notificationMessage}/>
+      <Error message={errorMessage} />
 
-       
-            <LoginForm 
-              handleLogin={handleLogin}
-              handleLogout={handleLogout}
-              handleUsernameChange={handleUsernameChange}
-              handlePasswordChange={handlePasswordChange}
-              username={username}
-              password={password}
-              user = {user}
+
+      <LoginForm
+        handleLogin={handleLogin}
+        handleLogout={handleLogout}
+        handleUsernameChange={handleUsernameChange}
+        handlePasswordChange={handlePasswordChange}
+        username={username}
+        password={password}
+        user = {user}
+      />
+      {(user === null) ?
+        <div></div> :
+        <div>
+          <h2>Blogs:</h2>
+          <Togglable
+            buttonLabel='New Blog'
+            ref={blogCreatorRef}>
+            <BlogCreator
+              title={title}
+              author={author}
+              url={url}
+              handleNewBlog={handleNewBlog}
+              handleTitleChange={handleTitleChange}
+              handleAuthorChange={handleAuthorChange}
+              handleUrlChange={handleUrlChange}
+              currentUser={user}
             /> 
-            {(user === null) ? 
-              <div></div> :
-              <div>
-                <h2>Blogs:</h2>
-                <Togglable 
-                  buttonLabel='New Blog' 
-                  ref={blogCreatorRef}>
-                  <BlogCreator 
-                    title={title}
-                    author={author}
-                    url={url}
-                    handleNewBlog={handleNewBlog}
-                    handleTitleChange={handleTitleChange}
-                    handleAuthorChange={handleAuthorChange}
-                    handleUrlChange={handleUrlChange}
-                    currentUser={user}
-                  /> 
-                </Togglable> <br/>
-                <Bloglist 
-                  currentUserID={user.id}
-                  blogs={blogs}
-                  handleLikeButton={handleLikeButton}
-                  handleDeleteButton={handleDeleteButton}
-                /> 
-              </div>
-            }
-      </div>
-    )
+          </Togglable> <br/>
+          <Bloglist
+            currentUserID={user.id}
+            blogs={blogs}
+            handleLikeButton={handleLikeButton}
+            handleDeleteButton={handleDeleteButton}
+          />
+        </div>
+      }
+    </div>
+  )
 }
 
-export default App;
+export default App

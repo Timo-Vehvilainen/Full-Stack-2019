@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-const Blog = ({ 
+const Blog = ({
   blog,
   handleLikeButton,
   handleDeleteButton,
   currentUserID
-  }) => {
+}) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
 
   const blogStyle = {
@@ -16,7 +16,7 @@ const Blog = ({
     marginBottom: 5
   }
 
-  const toggleDetailVisibility = (event) => {
+  const toggleDetailVisibility = () => {
     setDetailsVisible(!detailsVisible)
   }
 
@@ -29,16 +29,16 @@ const Blog = ({
         <div>
           <a href={blog.url}>{blog.url}</a> <br/>
           {blog.likes} {blog.likes === 1 ? 'like' : 'likes'} <br/>
-          <button 
-            value={JSON.stringify(blog)} 
+          <button
+            value={JSON.stringify(blog)}
             onClick={handleLikeButton}>Add like
           </button> <br/>
           added by {blog.user.name} <br />
           {(currentUserID === blog.user.id) ?
-            <button 
+            <button
               value={JSON.stringify(blog)}
               onClick={handleDeleteButton}>Remove
-            </button> : 
+            </button> :
             <div></div>
           }
         </div> :
@@ -46,6 +46,6 @@ const Blog = ({
       }
     </div>
   )
-  }
+}
 
 export default Blog

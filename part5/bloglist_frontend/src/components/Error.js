@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Error = ({message}) => {
+const Error = ({ message }) => {
   const errorStyle = {
     color: 'red',
     background: 'lightgrey',
@@ -20,7 +20,7 @@ const Error = ({message}) => {
       {console.log(message)}
       {message}
     </div>
-  ) 
+  )
 }
 
 export default Error

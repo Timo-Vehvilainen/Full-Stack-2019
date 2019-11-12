@@ -2,28 +2,28 @@ import React from 'react'
 import Blog from './Blog'
 
 const Bloglist = ({
-  blogs, 
+  blogs,
   handleLikeButton,
-  handleDeleteButton, 
+  handleDeleteButton,
   currentUserID
-  }) => {
+}) => {
 
-    const compareLikes = (a, b) => {
-      return (b.likes-a.likes)
-    }
-    return(
+  const compareLikes = (a, b) => {
+    return (b.likes-a.likes)
+  }
+  return(
     <div>
       {blogs.sort(compareLikes).map(blog =>
         <Blog 
-        key={blog.id}
-        blog={blog} 
-        handleLikeButton={handleLikeButton}
-        handleDeleteButton={handleDeleteButton}
-        currentUserID={currentUserID}
+          key={blog.id}
+          blog={blog}
+          handleLikeButton={handleLikeButton}
+          handleDeleteButton={handleDeleteButton}
+          currentUserID={currentUserID}
         />
       )}
     </div>
-    )
-  }
+  )
+}
 
 export default Bloglist
