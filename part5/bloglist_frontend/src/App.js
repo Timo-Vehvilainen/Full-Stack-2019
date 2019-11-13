@@ -7,6 +7,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Error from './components/Error'
+import { useField } from './hooks'
 
 import './App.css'
 
@@ -15,11 +16,11 @@ function App() {
   const [blogs, setBlogs] = useState([])
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const username = useField('text')
+  const password = useField('password')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [user, setUser] = useState(null)
   const blogCreatorRef = React.createRef()
 
@@ -56,19 +57,19 @@ function App() {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
+    console.log('logging in with', username.value, password.value)
     try {
       const userLogin = await loginService.login({
-        username, password,
+        'username': username.value, 'password': password.value,
       })
       blogService.setToken(userLogin.token)
       setUser(userLogin)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
       window.localStorage.setItem(
         'loggedBloglistUser', JSON.stringify(userLogin)
       )
-      setNotificationMessage(`Successfully logged in as ${username}`)
+      setNotificationMessage(`Successfully logged in as ${username.value}`)
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
@@ -91,18 +92,18 @@ function App() {
   const handleNewBlog = async (event) => {
     event.preventDefault()
     blogCreatorRef.current.toggleVisibility()
-    console.log('Creating a new log', title, author, url)
+    console.log('Creating a new log', title.value, author.value, url.value)
     try {
       const createdBlog = {
-        'title': title,
-        'author':author,
-        'url':url,
+        'title': title.value,
+        'author':author.value,
+        'url':url.value,
         'userId':user.id
       }
       await blogService.create(createdBlog)
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
-      setNotificationMessage(`Created a new blog: ${title} by ${author}`)
+      setNotificationMessage(`Created a new blog: ${title.value} by ${author.value}`)
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
@@ -164,23 +165,9 @@ function App() {
     }
   }
 
-  const handleUsernameChange = ({ target }) => {
-    setUsername(target.value)
-  }
-
-  const handlePasswordChange = ({ target }) => {
-    setPassword(target.value)
-  }
-  const handleTitleChange = ({ target }) => {
-    setTitle(target.value)
-  }
-
-  const handleAuthorChange = ({ target }) => {
-    setAuthor(target.value)
-  }
-
-  const handleUrlChange = ({ target }) => {
-    setUrl(target.value)
+  const omitReset = (value) => {  //probably not very elegant to handle it like this, 
+    const { reset, ...others } = value
+    return others
   }
 
   return (
@@ -194,10 +181,8 @@ function App() {
       <LoginForm
         handleLogin={handleLogin}
         handleLogout={handleLogout}
-        handleUsernameChange={handleUsernameChange}
-        handlePasswordChange={handlePasswordChange}
-        username={username}
-        password={password}
+        username={omitReset(username)}
+        password={omitReset(password)}
         user = {user}
       />
       {(user === null) ?
@@ -208,13 +193,10 @@ function App() {
             buttonLabel='New Blog'
             ref={blogCreatorRef}>
             <BlogCreator
-              title={title}
-              author={author}
-              url={url}
+              title={omitReset(title)}
+              author={omitReset(author)}
+              url={omitReset(url)}
               handleNewBlog={handleNewBlog}
-              handleTitleChange={handleTitleChange}
-              handleAuthorChange={handleAuthorChange}
-              handleUrlChange={handleUrlChange}
               currentUser={user}
             /> 
           </Togglable> <br/>

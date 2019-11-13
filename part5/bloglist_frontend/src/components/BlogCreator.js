@@ -4,41 +4,20 @@ const BlogCreator = ({
   title,
   author,
   url,
-  handleNewBlog,
-  handleTitleChange,
-  handleAuthorChange,
-  handleUrlChange
+  handleNewBlog
 }) => {
   return (
     <div>
       <h2>Create new blog</h2>
       <form onSubmit={handleNewBlog}>
         <div>
-          title:
-          <input
-            type="text"
-            value={title}
-            name="Username"
-            onChange={handleTitleChange}
-          />
+          title: <input {...title} />
         </div>
         <div>
-          author:
-          <input
-            type="text"
-            value={author}
-            name="Author"
-            onChange={handleAuthorChange}
-          />
+          author: <input {...author} />
         </div>
         <div>
-          url:
-          <input
-            type="text"
-            value={url}
-            name="Url"
-            onChange={handleUrlChange}
-          />
+          url: <input {...url} />
         </div>
         <button type="submit">Create</button>
       </form>
