@@ -23,7 +23,7 @@ const BlogCreator = ({
           />
         </div>
         <div>
-          author
+          author:
           <input
             type="text"
             value={author}
@@ -32,7 +32,7 @@ const BlogCreator = ({
           />
         </div>
         <div>
-          url
+          url:
           <input
             type="text"
             value={url}

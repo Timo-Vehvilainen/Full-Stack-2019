@@ -1,72 +1,61 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render,  fireEvent } from '@testing-library/react'
-import { prettyDom } from '@testing-library/dom'
+import { render, fireEvent } from '@testing-library/react'
+import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
-test('renders content and clicking the title works', () => {
-  const blog = {
-    title: 'Title to be tested',
-    author: 'Testee',
-    url:'http://www.testableurl.com',
-    likes: 11,
-    user: 'KSDJSDIAOASF89UHOI'
-  }
+describe('Blog content', () => {
 
-  const mockLikehandler = jest.fn()
-  const mockDeletehandler = jest.fn()
+  let component
 
-  const { container } = render(
-    <Blog
-      blog={blog} 
-      handleLikeButton={mockLikehandler}
-      handleDeleteButton={mockDeletehandler}
-      currentUserID={blog.user}
-    />
-  )
+  beforeEach(() => {
+    const blog = {
+      title: 'Title to be tested',
+      author: 'Testee',
+      url:'http://www.testableurl.com',
+      likes: 11,
+      user: 'KSDJSDIAOASF89UHOI'
+    }
 
-  expect(container).toHaveTextContent(
-    'Title to be tested'
-  )
-  expect(container).toHaveTextContent(
-    'Testee'
-  )
-  expect(container).not.toHaveTextContent(
-    'http://www.testableurl.com'
-  )
-  expect(container).not.toHaveTextContent(
-    '11 likes'
-  )
-})
+    const mockLikehandler = jest.fn()
+    const mockDeletehandler = jest.fn()
 
-test('Clicking the title works', () => {
-  const blog = {
-    title: 'Title to be tested',
-    author: 'Testee',
-    url:'http://www.testableurl.com',
-    likes: 11,
-    user: 'KSDJSDIAOASF89UHOI'
-  }
+    component = render(
+      <Blog
+        blog={blog} 
+        handleLikeButton={mockLikehandler}
+        handleDeleteButton={mockDeletehandler}
+        currentUserID={blog.user}
+      />
+    )
+  })
 
-  const mockLikehandler = jest.fn()
-  const mockDeletehandler = jest.fn()
+  test('Renders only the title and author initially', () => {
 
-  const { container, getByText } = render(
-    <Blog
-      blog={blog} 
-      handleLikeButton={mockLikehandler}
-      handleDeleteButton={mockDeletehandler}
-      currentUserID={blog.user}
-    />
-  )
+    expect(component.container).toHaveTextContent(
+      'Title to be tested'
+    )
+    expect(component.container).toHaveTextContent(
+      'Testee'
+    )
+    expect(component.container).not.toHaveTextContent(
+      'http://www.testableurl.com'
+    )
+    expect(component.container).not.toHaveTextContent(
+      '11 likes'
+    )
+  })
 
-  const titleText = getByText('Title to be tested')
-  fireEvent.click(titleText)
+  test('Clicking the title reveals url and likes', () => {
 
-  expect(container).toHaveTextContent(
-    'http://www.testableurl.com'
-  )
-  expect(container).toHaveTextContent(
-    '11 likes'
-  )
+    const titleText = component.getByText('Title to be tested')
+    fireEvent.click(titleText)
+
+    expect(component.container).toHaveTextContent(
+      'http://www.testableurl.com'
+    )
+    expect(component.container).toHaveTextContent(
+      '11 likes'
+    )
+  })
 })

@@ -8,7 +8,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Error from './components/Error'
 
-import './App.css';
+import './App.css'
 
 
 function App() {
@@ -36,16 +36,22 @@ function App() {
         }, 5000)
       }
     }
-    fetchBlogs();
+    fetchBlogs()
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    if (loggedUserJSON !== null && loggedUserJSON !== 'null') {
-      const loggedUser = JSON.parse(loggedUserJSON)
-      setUser(loggedUser)
-      blogService.setToken(loggedUser.token)
+    const checkAlreadyLoggedIn = async () => {
+      const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+
+      if (loggedUserJSON !== null &&
+          loggedUserJSON !== 'null' &&
+          loggedUserJSON !== undefined) {
+        const loggedUserObject = JSON.parse(loggedUserJSON)
+        setUser(loggedUserObject)
+        blogService.setToken(loggedUserObject.token)
+      }
     }
+    checkAlreadyLoggedIn()
   }, [notificationMessage])
 
   const handleLogin = async (event) => {
@@ -55,7 +61,6 @@ function App() {
       const userLogin = await loginService.login({
         username, password,
       })
-      console.log(userLogin)
       blogService.setToken(userLogin.token)
       setUser(userLogin)
       setUsername('')
@@ -80,7 +85,7 @@ function App() {
     setUser(null)
     window.localStorage.setItem(
       'loggedBloglistUser', 'null'
-    ) 
+    )
   }
 
   const handleNewBlog = async (event) => {
