@@ -1,0 +1,66 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "uusi note",
+      "id": 3
+    },
+    {
+      "content": "jeenootti",
+      "id": 4
+    },
+    {
+      "content": "jeenootti",
+      "id": 5
+    },
+    {
+      "content": "jeenootti",
+      "id": 6
+    },
+    {
+      "content": "jeenootti",
+      "id": 7
+    },
+    {
+      "content": "jeenootti",
+      "id": 8
+    },
+    {
+      "content": "notenotenote",
+      "id": 9
+    },
+    {
+      "content": "jrwislvk",
+      "id": 10
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "Hahaanimi",
+      "number": "numero436",
+      "id": 2
+    },
+    {
+      "name": "uijui",
+      "number": "26894utwotoimii",
+      "id": 3
+    },
+    {
+      "name": "jujuhju",
+      "number": "918375",
+      "id": 4
+    }
+  ]
+}
