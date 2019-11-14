@@ -1,6 +1,15 @@
 const initialState = ''
 
-export const createNotificationAction = (message) => {
+export const setNotification = (message, secs) => {
+  return dispatch => {
+    dispatch(createNotificationAction(message))
+    setTimeout(() => {
+      dispatch(createClearAction())
+    }, secs*1000)
+  }
+}
+
+const createNotificationAction = message => {
   const action = {
     type: 'NOTIFICATION',
     message: message
@@ -8,10 +17,9 @@ export const createNotificationAction = (message) => {
   return action
 }
 
-export const createClearAction = () => {
+const createClearAction = () => {
   const action = {
-    type: 'CLEAR',
-    message: ''
+    type: 'CLEAR'
   }
   return action
 }
