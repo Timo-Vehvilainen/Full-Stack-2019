@@ -1,43 +1,35 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { createVoteAction } from '../reducers/anecdoteReducer'
-import { 
-  createNotificationAction,
-  createClearAction } from '../reducers/notificationReducer' 
+import { createNotificationAction,
+  createClearAction } from '../reducers/notificationReducer'
 
-const AnecdoteList = ({ store }) => {
-  const anecdotes = store.getState().anecdotes
-  const filter = store.getState().filter
+const AnecdoteList = (props) => {
 
-  const compareVotes = (a, b) => {
-    return (b.votes - a.votes)
-  }
-
-  const vote = (id, content) => {
-    store.dispatch(createVoteAction(id))
-    store.dispatch(createNotificationAction(
-      `you voted '${content}'`
-      ))
+  const vote = (id) => {
+    props.createVoteAction(id)
+    props.createNotificationAction(
+      `you voted '${props.anecdotesToShow
+        .find(anec =>anec.id === id)
+        .content}'`)
     setTimeout(() => {
-        store.dispatch(createClearAction())
+        props.createClearAction()
       }, 5000)
   }
 
   return (
     <div>
-      {anecdotes
-        .filter(anec => 
-          anec.content.toUpperCase()
-            .includes(filter.toUpperCase())
-        )
-        .sort(compareVotes)
-        .map(anec =>
-        <div key={anec.id}>
+      {props.anecdotesToShow.map(anecdote =>
+        <div key={anecdote.id}>
           <div>
-            {anec.content}
+            {anecdote.content}
           </div>
           <div>
-            has {anec.votes}
-            <button onClick={() => vote(anec.id, anec.content)}>vote</button>
+            has {anecdote.votes}
+            <button onClick={() => 
+              vote(anecdote.id)}>
+                vote
+            </button>
           </div>
         </div>
       )}
@@ -45,4 +37,33 @@ const AnecdoteList = ({ store }) => {
   )
 }
 
-export default AnecdoteList
+const anecdotesToShow = ({ anecdotes, filter }) => {
+    return (
+      anecdotes.filter(anec => 
+        anec.content.toUpperCase()
+        .includes(filter.toUpperCase())
+      )
+      .sort((a, b) => {return (b.votes - a.votes)})
+    )
+}
+
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter,
+    anecdotesToShow: anecdotesToShow(state)
+  }
+}
+
+const mapDispatchToProps = {
+  createVoteAction,
+  createNotificationAction,
+  createClearAction
+}
+
+const ConnectedNotes = connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(AnecdoteList)
+export default ConnectedNotes

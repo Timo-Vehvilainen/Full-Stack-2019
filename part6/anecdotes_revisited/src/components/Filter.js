@@ -1,13 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { createFilterAction } from '../reducers/filterReducer'
 
-const Filter = ({ store }) => {
+const Filter = (props) => {
 
   const modifyFilter = (event) => {
     event.preventDefault()
-    store.dispatch(
-      createFilterAction(event.target.value)
-    )
+    props.createFilterAction(event.target.value)
   }
 
   return (
@@ -17,4 +16,4 @@ const Filter = ({ store }) => {
   )
 }
 
-export default Filter
+export default connect(null, { createFilterAction })(Filter)
