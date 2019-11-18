@@ -11,10 +11,9 @@ export const initBlogs = () => {
   }
 }
 
-
 export const addBlog = (blogObject) => {
   return async dispatch => {
-    const blogWithLikes = { ...blogObject, likes:0 }
+    const blogWithLikes = { ...blogObject, likes:0, comments:[] }
     const returnedBlog = await blogService.create(blogWithLikes)
     dispatch({
       type: 'ADD_BLOG',
@@ -32,10 +31,33 @@ export const likeBlog = (blogObject) => {
     await blogService.update(updatedBlog)
     console.log(updatedBlog)
     dispatch({
-      type: 'LIKE',
+      type: 'UPDATE',
       id: updatedBlog.id,
       data: updatedBlog
     })
+  }
+}
+
+export const commentBlog = (blogObject, comment) => {
+  return async (dispatch) => {
+    try {
+      console.log('hello from blogreducer')
+      const updatedBlog = {
+        ...blogObject,
+        comments: blogObject.comments.concat([comment])
+      }
+      await blogService.addComment(updatedBlog)
+      console.log(updatedBlog)
+      dispatch({
+        type: 'UPDATE',
+        id: updatedBlog.id,
+        data: updatedBlog
+      })
+      return updatedBlog
+    } catch (exception) {
+      console.log(exception)
+      return null
+    }
   }
 }
 
@@ -57,8 +79,7 @@ const blogReducer = (state = [], action) => {
     return action.data
   case 'ADD_BLOG':
     return state.concat(action.data)
-  case 'LIKE':
-    console.log(action)
+  case 'UPDATE':
     return state.map(blog => (blog.id === action.id) ? action.data : blog)
   case 'REMOVE':
     return state.filter(blog => blog.id !== action.id)

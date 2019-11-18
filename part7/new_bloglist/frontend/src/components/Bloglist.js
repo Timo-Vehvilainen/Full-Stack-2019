@@ -29,6 +29,7 @@ const Bloglist = (props) => {
       {props.blogs.sort(byLikes).map(blog =>
         <div key={blog.id} style={blogStyle}>
           <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          ({blog.likes} {blog.likes === 1 ? 'like' : 'likes'})
         </div>
       )}
     </div>

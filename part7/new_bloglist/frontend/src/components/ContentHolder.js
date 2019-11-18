@@ -6,15 +6,13 @@ import Userlist from './Userlist'
 import User from './User'
 import Blog from './Blog'
 import Togglable from './Togglable'
-import Notification from './Notification'
-import LogScreen from './LogScreen'
 import { initUsers } from '../reducers/userlistReducer'
 import {
   BrowserRouter as Router,
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
 
-const App = (props) => {
+const ContentHolder = (props) => {
 
   const toggleRef = React.createRef()
 
@@ -24,9 +22,9 @@ const App = (props) => {
         <h2>Blog-App</h2>
 
         <Route
-          exact path='/'
+          exact path='/blogs'
           render={() =>
-            <Togglable buttonLabel='create new' ref={toggleRef}>
+            <Togglable buttonLabel='Create new blog' ref={toggleRef}>
               <NewBlog toggleRef={toggleRef}/>
             </Togglable>
           }
@@ -74,4 +72,4 @@ const mapDispatchToProps = {
   initUsers
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(ContentHolder)

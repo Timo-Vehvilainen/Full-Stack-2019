@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { initBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import Comments from './Comments'
 import {
   BrowserRouter as Router,
   Route, Link, Redirect, withRouter
@@ -34,13 +35,16 @@ const BlogNoHistory = (props) => {
     return (
       <div>
         <h1>{props.blog.author}: {props.blog.title}</h1>
-        {props.blog.url} <br/>
+        <a href={props.blog.url}>{props.blog.url}</a> <br/>
         {props.blog.likes} {props.blog.likes === 1 ? 'like' : 'likes'}
         <button onClick={handleLike}>like</button> <br/>
         added by {props.blog.user.name} <br/>
         {(props.blog.user.id === props.currentUser.id) ?
           <button onClick={handleRemove}>Remove</button> :
           <div></div>}
+        <div>
+          <Comments id={props.blog.id} />
+        </div>
       </div>
     )
   return null
