@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/5dc547e11d066c4cd42efa8f
+Content-Type: application/json
+
+{
+  "title":"Updated title",
+"author":"New first author",
+"url":"www.imaginarywebsite.com",
+"likes":999999
+}

@@ -198,7 +198,7 @@ function App() {
               url={omitReset(url)}
               handleNewBlog={handleNewBlog}
               currentUser={user}
-            /> 
+            />
           </Togglable> <br/>
           <Bloglist
             currentUserID={user.id}
