@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import NewBlog from './NewBlog'
 import Bloglist from './Bloglist'
@@ -6,58 +6,56 @@ import Userlist from './Userlist'
 import User from './User'
 import Blog from './Blog'
 import Togglable from './Togglable'
+import Notification from './Notification'
+import LogScreen from './LogScreen'
 import { initUsers } from '../reducers/userlistReducer'
 import {
   BrowserRouter as Router,
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
 
-const ContentHolder = (props) => {
+const App = (props) => {
 
   const toggleRef = React.createRef()
 
   if (props.currentUser)
     return (
       <div>
-        {console.log('hi before userlist')}
-        <Router>
-          <div>
+        <h2>Blog-App</h2>
 
-            <Route
-              exact path='/'
-              render={() =>
-                <Togglable buttonLabel='create new' ref={toggleRef}>
-                  <NewBlog toggleRef={toggleRef}/>
-                </Togglable>
-              }
-            />
+        <Route
+          exact path='/'
+          render={() =>
+            <Togglable buttonLabel='create new' ref={toggleRef}>
+              <NewBlog toggleRef={toggleRef}/>
+            </Togglable>
+          }
+        />
 
-            <Route
-              exact path='/'
-              render={() => <Bloglist />}
-            />
+        <Route
+          exact path='/blogs'
+          render={() => <Bloglist />}
+        />
 
-            <Route 
-              exact path="/users"
-              render={() => <Userlist/>}
-            />
+        <Route 
+          exact path="/users"
+          render={() => <Userlist/>}
+        />
 
-            <Route
-              path={'/users/:id'}
-              render={({ match }) =>
-                <User id={match.params.id} />
-              }
-            />
+        <Route
+          path={'/users/:id'}
+          render={({ match }) =>
+            <User id={match.params.id} />
+          }
+        />
 
-            <Route
-              path={'/blogs/:id'}
-              render={({ match }) =>
-                <Blog id={match.params.id} />
-              }
-            />
+        <Route
+          path={'/blogs/:id'}
+          render={({ match }) =>
+            <Blog id={match.params.id} />
+          }
+        />
 
-          </div>
-        </Router>
       </div>
     )
   else
@@ -76,4 +74,4 @@ const mapDispatchToProps = {
   initUsers
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContentHolder)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

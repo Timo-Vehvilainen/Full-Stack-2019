@@ -2,8 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { initBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 
-const Blog = (props) => { 
+const BlogNoHistory = (props) => {
 
   const handleLike = async () => {
     props.likeBlog(props.blog)
@@ -22,6 +26,7 @@ const Blog = (props) => {
         message: `Removed blog '${props.blog.title}' by ${props.blog.author}`,
         type:'success'
       }, 5)
+      props.history.push('/blogs')
     }
   }
 
@@ -32,9 +37,9 @@ const Blog = (props) => {
         {props.blog.url} <br/>
         {props.blog.likes} {props.blog.likes === 1 ? 'like' : 'likes'}
         <button onClick={handleLike}>like</button> <br/>
-        added by {props.blog.user.name}
+        added by {props.blog.user.name} <br/>
         {(props.blog.user.id === props.currentUser.id) ?
-          <button onClick={handleRemove}>Remove</button> : 
+          <button onClick={handleRemove}>Remove</button> :
           <div></div>}
       </div>
     )
@@ -50,7 +55,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
   likeBlog,
+  removeBlog,
   setNotification
 }
+
+const Blog = withRouter(BlogNoHistory)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog)

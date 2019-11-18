@@ -2,15 +2,20 @@ import React from 'react'
 import Notification from './components/Notification'
 import LogScreen from './components/LogScreen'
 import ContentHolder from './components/ContentHolder'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 
 const App = () => {
   return (
-    <div>
-      <h2>Blogs</h2>
-      <Notification />
-      <LogScreen />
-      <ContentHolder />
-    </div>
+    <Router>
+      <div>
+        <Notification />
+        <LogScreen />
+        <ContentHolder />
+      </div>
+    </Router>
   )
 }
 

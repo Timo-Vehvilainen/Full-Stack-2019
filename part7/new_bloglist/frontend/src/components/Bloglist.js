@@ -24,6 +24,7 @@ const Bloglist = (props) => {
 
   return (
     <div>
+      <h2>List of blogs</h2>
       {console.log(props.blogs)}
       {props.blogs.sort(byLikes).map(blog =>
         <div key={blog.id} style={blogStyle}>

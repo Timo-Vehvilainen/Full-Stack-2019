@@ -4,8 +4,12 @@ import Login from './Login'
 import LoggedIn from './LoggedIn'
 import { setCurrentUser, clearCurrentUser } from '../reducers/currentUserReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 
-const LogScreen = (props) => {
+const LogScreenNoHistory = (props) => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -36,6 +40,7 @@ const LogScreen = (props) => {
             type: 'success'
           }, 5
         )
+        props.history.push('/blogs')
       } else {
         props.setNotification(
           {
@@ -64,6 +69,7 @@ const LogScreen = (props) => {
       message:`Logged out from account '${username}'`,
       type: 'success'
     }, 5)
+    props.history.push('/')
   }
 
   return (
@@ -87,5 +93,7 @@ const mapDispatchToProps = {
   clearCurrentUser,
   setNotification
 }
+
+const LogScreen = withRouter(LogScreenNoHistory)
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogScreen)

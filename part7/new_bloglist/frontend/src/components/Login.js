@@ -4,6 +4,7 @@ const Login = ({ handleLogin }) => {
 
   return (
     <div>
+      <h2>blogs</h2>
       <form onSubmit={handleLogin}>
         <div>
           Username:
