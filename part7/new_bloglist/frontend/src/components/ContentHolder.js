@@ -7,10 +7,8 @@ import User from './User'
 import Blog from './Blog'
 import Togglable from './Togglable'
 import { initUsers } from '../reducers/userlistReducer'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { Route } from 'react-router-dom'
+import { Item, Header, ItemGroup } from 'semantic-ui-react'
 
 const ContentHolder = (props) => {
 
@@ -19,41 +17,53 @@ const ContentHolder = (props) => {
   if (props.currentUser)
     return (
       <div>
-        <h2>Blog-App</h2>
+        <Header as='h3'>Blog-App</Header>
+        <ItemGroup>
+          <Route
+            exact path='/blogs'
+            render={() =>
+              <Item>
+                <Togglable buttonLabel='Create new blog' ref={toggleRef}>
+                  <NewBlog toggleRef={toggleRef}/>
+                </Togglable>
+              </Item>
+            }
+          />
 
-        <Route
-          exact path='/blogs'
-          render={() =>
-            <Togglable buttonLabel='Create new blog' ref={toggleRef}>
-              <NewBlog toggleRef={toggleRef}/>
-            </Togglable>
-          }
-        />
+          <Route
+            exact path='/blogs'
+            render={() =>
+              <Item>
+                <Bloglist />
+              </Item>}
+          />
 
-        <Route
-          exact path='/blogs'
-          render={() => <Bloglist />}
-        />
+          <Route
+            exact path="/users"
+            render={() =>
+              <Item>
+                <Userlist/>
+              </Item>}
+          />
 
-        <Route 
-          exact path="/users"
-          render={() => <Userlist/>}
-        />
+          <Route
+            path={'/users/:id'}
+            render={({ match }) =>
+              <Item>
+                <User id={match.params.id} />
+              </Item>
+            }
+          />
 
-        <Route
-          path={'/users/:id'}
-          render={({ match }) =>
-            <User id={match.params.id} />
-          }
-        />
-
-        <Route
-          path={'/blogs/:id'}
-          render={({ match }) =>
-            <Blog id={match.params.id} />
-          }
-        />
-
+          <Route
+            path={'/blogs/:id'}
+            render={({ match }) =>
+              <Item>
+                <Blog id={match.params.id} />
+              </Item>
+            }
+          />
+        </ItemGroup>
       </div>
     )
   else

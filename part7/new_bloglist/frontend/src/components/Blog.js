@@ -1,12 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { initBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Comments from './Comments'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import { Header, Item, Button, Icon, ItemGroup } from 'semantic-ui-react'
 
 const BlogNoHistory = (props) => {
 
@@ -33,19 +31,31 @@ const BlogNoHistory = (props) => {
 
   if (props.blog)
     return (
-      <div>
-        <h1>{props.blog.author}: {props.blog.title}</h1>
-        <a href={props.blog.url}>{props.blog.url}</a> <br/>
-        {props.blog.likes} {props.blog.likes === 1 ? 'like' : 'likes'}
-        <button onClick={handleLike}>like</button> <br/>
-        added by {props.blog.user.name} <br/>
-        {(props.blog.user.id === props.currentUser.id) ?
-          <button onClick={handleRemove}>Remove</button> :
-          <div></div>}
-        <div>
+      <ItemGroup>
+        <Header as='h1'>{props.blog.author}: {props.blog.title}</Header>
+        <Item>
+          <a href={props.blog.url}>{props.blog.url}</a>
+        </Item>
+
+        <Item>
+          {props.blog.likes} {props.blog.likes === 1 ? 'like' : 'likes'}
+          <Button onClick={handleLike}><Icon name='thumbs up'/></Button>
+        </Item>
+
+        <Item>
+        added by {props.blog.user.name}
+        </Item>
+
+        <Item>
+          {(props.blog.user.id === props.currentUser.id) ?
+            <Button primary onClick={handleRemove}>Remove</Button> :
+            null}
+        </Item>
+
+        <Item>
           <Comments id={props.blog.id} />
-        </div>
-      </div>
+        </Item>
+      </ItemGroup>
     )
   return null
 }

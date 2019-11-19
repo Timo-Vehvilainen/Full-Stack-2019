@@ -1,25 +1,25 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { Menu, Button } from 'semantic-ui-react'
 
 const LoggedIn = ({ name, handleLogout }) => {
-  const loggedInMenuStyle = {
-    backgroundColor: 'silver'
-  }
-
-  const menuLinkStyle = {
-    paddingLeft: 5,
-    paddingRight: 5
-  }
 
   return (
-    <div style={loggedInMenuStyle}>
-      <Link to='/blogs' style={menuLinkStyle}>blogs</Link>
-      <Link to='/users' style={menuLinkStyle}>users</Link>
-      Logged in as {name}
-      <button style={menuLinkStyle} onClick={handleLogout}>logout</button>
+    <div>
+      <Menu inverted>
+        <Menu.Item link>
+          <Link to='/blogs'>blogs</Link>
+        </Menu.Item>
+        <Menu.Item link>
+          <Link to='/users'>users</Link>
+        </Menu.Item>
+        <Menu.Item>
+          Logged in as {name}
+        </Menu.Item>
+        <Button onClick={handleLogout}>
+          Log out
+        </Button>
+      </Menu>
     </div>
   )
 }

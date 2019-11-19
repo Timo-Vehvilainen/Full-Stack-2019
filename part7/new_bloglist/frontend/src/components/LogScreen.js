@@ -4,10 +4,7 @@ import Login from './Login'
 import LoggedIn from './LoggedIn'
 import { setCurrentUser, clearCurrentUser } from '../reducers/currentUserReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 const LogScreenNoHistory = (props) => {
 
@@ -18,6 +15,7 @@ const LogScreenNoHistory = (props) => {
       const user = JSON.parse(loggedUserJSON)
       console.log(user)
       props.setCurrentUser(user)
+      props.history.push('/blogs')
     }
   }, [])
 
@@ -36,7 +34,7 @@ const LogScreenNoHistory = (props) => {
         console.log(window.localStorage.getItem('loggedBlogAppUser'))
         props.setNotification(
           {
-            message: `Logged in as '${newUser.username}'`,
+            message: `Welcome ${response.name}`,
             type: 'success'
           }, 5
         )
@@ -67,7 +65,7 @@ const LogScreenNoHistory = (props) => {
     window.localStorage.removeItem('loggedBlogAppUser')
     props.setNotification({
       message:`Logged out from account '${username}'`,
-      type: 'success'
+      type: 'neutral'
     }, 5)
     props.history.push('/')
   }

@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initBlogs } from '../reducers/blogReducer'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { Header, Item, ItemGroup } from 'semantic-ui-react'
 
 const Bloglist = (props) => {
   console.log(props)
@@ -12,26 +10,22 @@ const Bloglist = (props) => {
     props.initBlogs()
   }, [])
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
     <div>
-      <h2>List of blogs</h2>
+      <Header as='h2'>List of blogs</Header>
       {console.log(props.blogs)}
-      {props.blogs.sort(byLikes).map(blog =>
-        <div key={blog.id} style={blogStyle}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          ({blog.likes} {blog.likes === 1 ? 'like' : 'likes'})
-        </div>
-      )}
+      <ItemGroup divided>
+        {props.blogs.sort(byLikes).map(blog => {
+          return (
+            <Item key={blog.id}>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              ({blog.likes} {blog.likes === 1 ? 'like' : 'likes'})
+            </Item>
+          )}
+        )}
+      </ItemGroup>
     </div>
   )
 }

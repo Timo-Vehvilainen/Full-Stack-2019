@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { commentBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Header, Comment, Form, Button } from 'semantic-ui-react'
 
 const Comments = (props) => {
 
@@ -17,7 +18,7 @@ const Comments = (props) => {
       event.target.comment.value = ''
       props.setNotification({
         message: `Added comment '${comment}' to blog '${props.blog.title}'`,
-        type: 'success'
+        type: 'neutral'
       }, 5)
     } catch (exception) {
       props.setNotification({
@@ -31,18 +32,25 @@ const Comments = (props) => {
   if (props.blog)
     return (
       <div>
-        <h2>Comments:</h2>
-        <ul>
+        <Comment.Group minimal>
+          <Header as='h2' dividing>Comments:</Header>
           {props.blog.comments
-            .map(comment =>
-              <li key={comment}>{comment}</li>
-            )
+            .map(comment => { return(
+              <div key={comment}>
+                <Comment>
+                  <Comment.Avatar src='https://cdn.onlinewebfonts.com/svg/img_569204.png' />
+                  <Comment.Content>
+                    <Comment.Text>{comment}</Comment.Text>
+                  </Comment.Content>
+                </Comment> <br/>
+              </div>
+            )})
           }
-        </ul>
-        <form onSubmit={handleComment}>
-          <textarea rows='4' cols='50' name='comment' /> <br/>
-          <button type='submit'>add comment</button>
-        </form>
+          <Form onSubmit={handleComment}>
+            <Form.TextArea name='comment' /> <br/>
+            <Button primary type='submit'>Add Comment</Button>
+          </Form>
+        </Comment.Group>
       </div>
     )
   return null

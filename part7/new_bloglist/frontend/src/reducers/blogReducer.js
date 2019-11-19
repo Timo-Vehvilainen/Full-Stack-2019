@@ -13,11 +13,12 @@ export const initBlogs = () => {
 
 export const addBlog = (blogObject) => {
   return async dispatch => {
-    const blogWithLikes = { ...blogObject, likes:0, comments:[] }
-    const returnedBlog = await blogService.create(blogWithLikes)
+    const NewBlog = { ...blogObject, likes:0, comments:[] }
+    console.log(NewBlog)
+    const returnedBlog = await blogService.create(NewBlog)
     dispatch({
       type: 'ADD_BLOG',
-      data: { ...blogWithLikes, id:returnedBlog.id }
+      data: { ...NewBlog, id:returnedBlog.id }
     })
   }
 }

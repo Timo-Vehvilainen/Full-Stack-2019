@@ -2,17 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Form, Button } from 'semantic-ui-react'
 
 const NewBlog = (props) => {
 
   const createBlog = (event) => {
     event.preventDefault()
-
+    console.log(props.currentUser)
     const blogToAdd = {
       title: event.target.title.value,
       author: event.target.author.value,
       url: event.target.url.value,
-      user: props.user
+      user: props.currentUser
     }
     props.addBlog(blogToAdd)
     props.setNotification(
@@ -36,28 +37,28 @@ const NewBlog = (props) => {
     <div>
       <h2>Create new</h2>
 
-      <form onSubmit={createBlog}>
-        <div>
-          title:
-          <input name='title' />
-        </div>
-        <div>
-          author:
-          <input name='author' />
-        </div>
-        <div>
-          url:
-          <input name='url' />
-        </div>
-        <button type='submit'>create</button>
-      </form>
+      <Form onSubmit={createBlog}>
+        <Form.Field>
+          <label>title:</label>
+          <input type='text' name='title' />
+        </Form.Field>
+        <Form.Field>
+          <label>author:</label>
+          <input type='text' name='author' />
+        </Form.Field>
+        <Form.Field>
+          <label>url:</label>
+          <input type='text' name='url' />
+        </Form.Field>
+        <Button primary type='submit'>Create</Button>
+      </Form>
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    currentUser: state.currentUser
   }
 }
 

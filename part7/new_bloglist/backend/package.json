@@ -7,7 +7,11 @@
     "start": "node index.js",
     "watch": "nodemon index.js",
     "test": "jest . --verbose",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "build:ui": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend/",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "logs:prod": "heroku logs --tail"
   },
   "author": "",
   "license": "ISC",
