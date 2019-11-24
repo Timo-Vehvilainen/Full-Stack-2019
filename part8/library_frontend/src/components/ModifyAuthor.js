@@ -18,13 +18,10 @@ const ModifyAuthor = (props) => {
 
     const setBornTo = parseInt(born)
     console.log(setBornTo)
-    console.log('modify birthyear...')
+    console.log('modify birthyear of...', name)
     await props.setBorn({
       variables: { name, setBornTo }
     })
-
-    setName('')
-    setBorn('')
 
   }
 
@@ -33,11 +30,13 @@ const ModifyAuthor = (props) => {
       <h2>Set birthyear</h2>
       <form onSubmit={setBirthYear}>
         name
-        <select value={name} onChange={({target}) => setName(target.value)}>
-          {authors.map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+        <select onClick={({target}) => setName(target.value)} >
+          <option value='' selected disabled hidden>Choose Author</option>
+          {authors.map(a => <option key={a.id}>{a.name}</option>)}
         </select> <br/>
         born
         <input 
+        type='number'
         value={born} 
         onChange={({ target }) => setBorn(target.value)} /> <br/>
         <button type='submit' >update author</button>
